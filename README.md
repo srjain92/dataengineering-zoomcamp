@@ -32,8 +32,10 @@ limit 1;
 SELECT b.zone
 FROM public.green_tripdata a
 LEFT JOIN public.taxi_zone_lookup b ON b.locationid = a.dolocationid
-WHERE b.zone = 'East Harlem North'
+LEFT JOIN public.taxi_zone_lookup c ON c.locationid = a.pulocationid
+WHERE c.zone = 'East Harlem North'
 AND DATE(lpep_pickup_datetime) >= '2025-11-01'
 AND DATE(lpep_pickup_datetime) < '2025-12-01'
 GROUP BY b.zone
-ORDER BY MAX(a.tip_amount)
+ORDER BY MAX(a.tip_amount) DESC
+limit 1;
