@@ -1,7 +1,7 @@
 # dataengineering-zoomcamp
 Data Engineering ZoomCamp by DataTalksClub
 
-#**Question 1. Understanding Docker images**
+**Question 1. Understanding Docker images**\
 docker run --rm python:3.13 pip --version
 
 **Question 3. Counting short trips**
