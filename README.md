@@ -7,8 +7,8 @@ docker run --rm python:3.13 pip --version
 Question 3. Counting short trips
 SELECT COUNT(1)
 FROM public.green_tripdata
-WHERE lpep_pickup_datetime >= '2025-11-01'
-AND lpep_pickup_datetime < '2025-12-01'
+WHERE DATE(lpep_pickup_datetime) >= '2025-11-01'
+AND DATE(lpep_pickup_datetime) < '2025-12-01'
 AND trip_distance <= 1
 
 Question 4. Longest trip for each day
