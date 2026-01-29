@@ -14,6 +14,7 @@ x-airflow-common:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
+    - /var/run/docker.sock:/var/run/docker.sock
     # This mounts your local GCP key into the container
     - ~/.google/credentials/google_credentials.json:/opt/airflow/google_credentials.json:ro
   user: "${AIRFLOW_UID:-50000}:0"
