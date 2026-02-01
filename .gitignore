@@ -215,3 +215,20 @@ __marimo__/
 # Ignore the downloaded taxi data files
 *.csv.gz
 *.parquet
+
+# Local .terraform path
+.terraform/
+
+# Distributed state files (can contain secrets!)
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Sensitive credentials
+google_credentials.json
+
+# Local variables (where you might keep secrets)
+*.tfvars
+*.tfvars.json
