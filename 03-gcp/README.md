@@ -5,7 +5,6 @@ This directory contains the SQL queries used to analyze the NYC Taxi dataset for
 ## Dataset Statistics
 
 ### Question 3: Yellow Taxi Rows (Year 2020)
-*Total count of Yellow taxi trips that occurred in 2020.*
 
 ```sql
 SELECT count(1)
@@ -15,7 +14,6 @@ AND tpep_pickup_datetime < '2021-01-01';
 '''
 
 ### Question 4: Green Taxi 2020 Row Count
-*Query: How many rows are there for the Green Taxi data for all CSV files in the year 2020?
 
 '''sql
 SELECT count(1) AS total_rows
@@ -25,11 +23,9 @@ AND lpep_pickup_datetime < '2021-01-01';
 '''
 
 ### Question 5: Yellow Taxi March 2021 Row Count
-*Query: How many rows are there for the Yellow Taxi data for the March 2021 CSV file?
 
 '''sql
 SELECT count(1) AS march_2021_total
 FROM `nyc-taxi-data-pipeline-485822.nyc_taxi_dataset.yellow_taxi_data`
 WHERE tpep_pickup_datetime >= '2021-03-01'
 AND tpep_pickup_datetime < '2021-04-01';
-'''
