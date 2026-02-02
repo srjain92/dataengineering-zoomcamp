@@ -6,11 +6,12 @@ from datetime import datetime
 from airflow import DAG
 from airflow.decorators import task
 from airflow.providers.google.cloud.transfers.local_to_gcs import LocalFilesystemToGCSOperator
+from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
 
 # --- 1. GOOGLE CLOUD & URL INFO ---
 PROJECT_ID = "nyc-taxi-data-pipeline-485822"
 BUCKET = "nyc-taxi-data-pipeline-485822-bucket"
-
+BQ_DATASET = "nyc_taxi_dataset"
 
 # --- 2. DAG DEFINITION ---
 default_args = {
@@ -19,7 +20,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id='yellow_taxi_data_ingestion_final_v1',
+    dag_id='yellow_taxi_data_ingestion_final_v3',
     schedule_interval="@monthly",
     start_date=datetime(2020, 1, 1),
     end_date=datetime(2021, 7, 1),
@@ -73,6 +74,19 @@ with DAG(
         gcp_conn_id="google_cloud_default" # Our verified connection
     )
 
+    # This task uses the BigQuery Operator to load data from GCS to BQ
+    load_to_bq = GCSToBigQueryOperator(
+        task_id="load_to_bq",
+        bucket=BUCKET,
+        source_objects=["raw/yellow/yellow_tripdata_{{ ds[:7] }}.csv"],
+        destination_project_dataset_table=f"{PROJECT_ID}.{BQ_DATASET}.yellow_taxi_data",
+        source_format='CSV',
+        skip_leading_rows=1,      # Skip the header row of the CSV
+        autodetect=True,          # Let BQ guess the column types (int, string, etc.)
+        write_disposition='WRITE_APPEND', # Add to the table, don't overwrite it
+        gcp_conn_id="google_cloud_default"
+    )
+
     @task
     def cleanup_data(file_info, csv_path):
         zip_path = file_info['zip_path']
@@ -92,5 +106,5 @@ with DAG(
     csv_file_path = unzip_data(info)
     
     # 3. Set the dependencies for the traditional operator and cleanup
-    # We tell Airflow: Unzip -> Upload -> Cleanup
-    csv_file_path >> upload_to_gcs >> cleanup_data(info, csv_file_path)
+    # We tell Airflow: Unzip -> Upload -> Load -> Cleanup
+    csv_file_path >> upload_to_gcs >> load_to_bq >> cleanup_data(info, csv_file_path)
