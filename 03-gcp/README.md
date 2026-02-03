@@ -1,4 +1,4 @@
-# Week 2 Homework: Data Warehouse and BigQuery
+# Homework 2: Workflow Orchestration
 
 This directory contains the SQL queries used to analyze the NYC Taxi dataset for the year 2020 and early 2021.
 
