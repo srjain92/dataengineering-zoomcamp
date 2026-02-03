@@ -1,7 +1,9 @@
 # Homework 1: Docker, SQL and Terraform
 
 ### Question 1. Understanding Docker images
+```bash
 docker run --rm python:3.13 pip --version
+```
 
 ### Question 3. Counting short trips
 ```sql
