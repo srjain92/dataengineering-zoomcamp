@@ -21,9 +21,9 @@ default_args = {
 }
 
 with DAG(
-    dag_id='green_taxi_data_ingestion_final_v2',
+    dag_id='green_taxi_data_ingestion_final_v6',
     schedule_interval="@monthly",
-    start_date=datetime(2020, 1, 1),
+    start_date=datetime(2019, 1, 1),
     end_date=datetime(2020, 12, 1),
     default_args=default_args,
     catchup=True,
@@ -80,12 +80,35 @@ with DAG(
         task_id="load_to_bq",
         bucket=BUCKET,
         source_objects=["raw/green/green_tripdata_{{ ds[:7] }}.csv"],
-        destination_project_dataset_table=f"{PROJECT_ID}.{BQ_DATASET}.green_taxi_data",
+        destination_project_dataset_table=f"{PROJECT_ID}.{BQ_DATASET}.green_taxi_data_2019_2020",
         source_format='CSV',
         skip_leading_rows=1,      # Skip the header row of the CSV
-        autodetect=True,          # Let BQ guess the column types (int, string, etc.)
+        #autodetect=True,          # Let BQ guess the column types (int, string, etc.)
         write_disposition='WRITE_APPEND', # Add to the table, don't overwrite it
-        gcp_conn_id="google_cloud_default"
+        gcp_conn_id="google_cloud_default",
+        autodetect=False,
+        schema_fields=[
+            {'name': 'VendorID', 'type': 'INT64', 'mode': 'NULLABLE'},
+            {'name': 'lpep_pickup_datetime', 'type': 'TIMESTAMP', 'mode': 'NULLABLE'},
+            {'name': 'lpep_dropoff_datetime', 'type': 'TIMESTAMP', 'mode': 'NULLABLE'},
+            {'name': 'store_and_fwd_flag', 'type': 'STRING', 'mode': 'NULLABLE'},
+            {'name': 'RatecodeID', 'type': 'INT64', 'mode': 'NULLABLE'},
+            {'name': 'PULocationID', 'type': 'INT64', 'mode': 'NULLABLE'},
+            {'name': 'DOLocationID', 'type': 'INT64', 'mode': 'NULLABLE'},
+            {'name': 'passenger_count', 'type': 'INT64', 'mode': 'NULLABLE'},
+            {'name': 'trip_distance', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'fare_amount', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'extra', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'mta_tax', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'tip_amount', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'tolls_amount', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'ehail_fee', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'improvement_surcharge', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'total_amount', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+            {'name': 'payment_type', 'type': 'INT64', 'mode': 'NULLABLE'},
+            {'name': 'trip_type', 'type': 'INT64', 'mode': 'NULLABLE'},
+            {'name': 'congestion_surcharge', 'type': 'FLOAT64', 'mode': 'NULLABLE'},
+        ]
     )
 
     @task
