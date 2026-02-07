@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: stg_yellow_tripdata
+    description: "Staged data for yellow taxi trips"
+    columns:
+      - name: tripid
+        description: "Primary key for this table, generated using a surrogate key"
+        tests:
+          - unique
+          - not_null
+      - name: payment_type
+        description: "Payment type used for the trip"
+        tests:
+          - accepted_values:
+              arguments: 
+                values: [1, 2, 3, 4, 5, 6]  # Ensure 'values' is indented under the test name
+              config:
+                severity: warn
+
+  - name: stg_green_tripdata
+    description: "Staged data for green taxi trips"
+    columns:
+      - name: tripid
+        description: "Primary key for this table, generated using a surrogate key"
+        tests:
+          - unique
+          - not_null
