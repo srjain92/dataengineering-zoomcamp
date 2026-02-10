@@ -31,6 +31,7 @@ select
     cast(mta_tax as numeric) as mta_tax,
     cast(tip_amount as numeric) as tip_amount,
     cast(tolls_amount as numeric) as tolls_amount,
+    cast(null as numeric) as ehail_fee,  -- <--- Add this here to match Green Taxi 
     cast(improvement_surcharge as numeric) as improvement_surcharge,
     cast(total_amount as numeric) as total_amount,
     cast(payment_type as integer) as payment_type,
