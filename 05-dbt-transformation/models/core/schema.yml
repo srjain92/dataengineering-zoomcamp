@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: dim_zones
+    description: "Combined data for yellow and green taxi data"
+    columns:
+      - name: locationid
+        description: "Primary key for this table"
+        tests:
+          - unique
+          - not_null
+
