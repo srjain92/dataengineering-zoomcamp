@@ -10,3 +10,50 @@ models:
           - unique
           - not_null
 
+  - name: fct_trips
+    description: "Info for yellow and green taxi data"
+    columns:
+      - name: tripid
+        description: "Primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: vendorid
+        description: Taxi technology provider
+        data_type: integer
+        data_tests:
+          - not_null
+      - name: service_type
+        description: Type of taxi service (Green or Yellow)
+        data_type: string
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Green', 'Yellow']
+      - name: pickup_locationid
+        description: TLC Taxi Zone where trip started
+        data_type: integer
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_zones')
+                field: locationid
+      - name: dropoff_locationid
+        description: TLC Taxi Zone where trip ended
+        data_type: integer
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_zones')
+                field: locationid
+      - name: pickup_datetime
+        description: Timestamp when meter was engaged
+        data_type: timestamp
+        data_tests:
+          - not_null
+      - name: total_amount
+        description: Total amount charged
+        data_type: numeric
+        data_tests:
+          - not_null
+
