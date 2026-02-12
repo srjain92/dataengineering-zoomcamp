@@ -48,8 +48,8 @@ select trips.tripid,
        trips.congestion_surcharge,
        trips.service_type
 from {{ ref('int_trips_unioned') }} as trips
-inner join {{ ref('dim_zones') }} as pz on pz.locationid = trips.pickup_locationid and pz.borough != 'Unknown'
-inner join {{ ref('dim_zones') }} as dz on dz.locationid = trips.dropoff_locationid and dz.borough != 'Unknown'
+left join {{ ref('dim_zones') }} as pz on pz.locationid = trips.pickup_locationid
+left join {{ ref('dim_zones') }} as dz on dz.locationid = trips.dropoff_locationid
 
 
 {% if is_incremental() %}

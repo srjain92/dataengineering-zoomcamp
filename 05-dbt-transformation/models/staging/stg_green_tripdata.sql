@@ -1,14 +1,18 @@
-
 with tripdata as 
 (
   select *,
-    row_number() over(partition by vendorid, lpep_pickup_datetime, pulocationid order by lpep_pickup_datetime) as rn
+    -- This handles perfect clones while keeping one copy of each
+    row_number() over(
+        partition by vendorid, lpep_pickup_datetime, lpep_dropoff_datetime, pulocationid, dolocationid
+        order by lpep_pickup_datetime
+    ) as rn
   from {{ source('staging','green_taxi_data_2019_2020') }}
   where vendorid is not null 
 )
+
 select
     -- identifiers
-    {{ dbt_utils.generate_surrogate_key(['vendorid', 'lpep_pickup_datetime', 'pulocationid', "'green'"]) }} as tripid,
+    {{ dbt_utils.generate_surrogate_key(['vendorid', 'lpep_pickup_datetime', 'lpep_dropoff_datetime', 'pulocationid', 'dolocationid', "'green'"]) }} as tripid,
     cast(vendorid as integer) as vendorid,
     cast(ratecodeid as integer) as ratecodeid,
     cast(pulocationid as integer) as pickup_locationid,

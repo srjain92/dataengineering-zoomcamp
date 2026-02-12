@@ -19,4 +19,4 @@ select pickup_zone,
        avg(passenger_count) as avg_monthly_passenger_count,
        avg(trip_distance) as avg_monthly_trip_distance
 from {{ ref('fct_trips') }}
-group by pickup_zone, service_type, date_trunc(pickup_datetime, month)
+group by 1,2,3
