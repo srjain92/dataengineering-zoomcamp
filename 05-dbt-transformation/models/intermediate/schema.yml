@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: int_trips_unioned
+    description: "Combined data for yellow and green taxi data"
+    columns:
+      - name: tripid
+        description: "Primary key for this table, generated using a surrogate key"
+        tests:
+          - unique
+          - not_null
+      - name: service_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Green', 'Yellow']
