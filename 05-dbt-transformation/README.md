@@ -27,3 +27,7 @@ AND EXTRACT(MONTH FROM revenue_month) = 10;
 ```
 
 ### Question 6. Q6: Count of records in stg_fhv_tripdata (filter dispatching_base_num IS NULL)?
+```sql
+SELECT COUNT(*)
+FROM nyc-taxi-data-pipeline-485822.dbt_sjain.stg_fhv_taxidata;
+```
