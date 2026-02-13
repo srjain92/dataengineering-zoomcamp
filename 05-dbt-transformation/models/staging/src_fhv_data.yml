@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: staging
+    database: nyc-taxi-data-pipeline-485822 # Your GCP Project ID
+    schema: nyc_taxi_dataset                # Your BigQuery Dataset
+    tables:
+      - name: fhv_taxi_data_2019
